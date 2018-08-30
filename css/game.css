@@ -5,20 +5,73 @@ body{
 }
 
 
-.square {
 
-    width: 10%;
-    background: #803536;
-    padding-bottom: 10%;
-    float: right;
-    margin: 1.66%;
-    border-radius: 15%;
-
-}
 
 #container {
     margin: 20px auto;
     max-width: 600px;
+}
+
+#stripe {
+    background: #f6ff87;
+    height: 30px;
+    text-align: left;
+    color: black;
+
+}
+
+button {
+    border: none;
+    background: none;
+    text-transform: uppercase;
+    height: 100%;
+    font-weight: 700;
+    color: #014d80;
+    letter-spacing: 1px;
+    font-size: inherit;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    padding-right: 10px;
+
+}
+
+
+input {
+    border: none;
+    background: azure;
+    text-transform: uppercase;
+    height: 100%;
+    font-weight: 700;
+    color: #014d80;
+    letter-spacing: 1px;
+    font-size: inherit;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+
+
+
+}
+
+
+.piece{
+    width: 10%;
+    background: #014d80;
+    padding-bottom: 10%;
+    float: right;
+    margin: 1.66%;
+    border-radius: 15%;
+}
+
+
+
+.wrongPiece {
+    background-color: red;
+}
+
+.correctPiece {
+    background-color: green;
 }
 
 
