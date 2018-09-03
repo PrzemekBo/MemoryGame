@@ -1,38 +1,61 @@
 var controller = function () {
     var startGame = function () {
-        var initialNumberOfPieces = view.getInitialNumberOfPieces();
+            var startNumberPieces = view.getStartNumberPieces(),
+                possibleNumberOfMistakes = view.getNumberOfFail();
 
-        view.resetPieces();
+            game.startGame({
+                numberOfPieces: startNumberPieces,
+                numberOfFail: possibleNumberOfMistakes
+            });
 
-        game.startGame({
-            numberOfPieces: initialNumberOfPieces
-        });
+            view.generatePieces(game.getPieces());
+            view.showNumberOfPieces(game.getCurrentNumberOfPieces());
+            view.showNumberOfPiecesToFind(game.calculatePiecesToFind(game.getCurrentNumberOfPieces()));
+            view.highlightPieces(game.getCurrentPieces());
+        },
 
-        view.generatePieces(game.getPieces());
-        view.highlight()
+        clickOnPiece = function (i) {
+            var clickedPiece = game.checkClickedPiece(i);
+            view.clickOnPiece(i, clickedPiece);
+            if (game.checkIfAllPiecesFinded()) {
+                view.blockAllElements();
+                setTimeout(function () {
+                    addPiece();
+                }, 1000);
+            }
 
-    };
+            if(!clickedPiece){
+                view.setNumberOfFail(game.getNumberOfFail());
+                if(!game.checkIfGameCanBeContinued()){
+                    view.blockAllElements();
+                    setTimeout(function () {
+                        view.showNumberOfPieces(4);
+                        game.resetNumberOfFails();
+                        view.setNumberOfFail(game.getNumberOfFail());
+                        startGame();
+                    }, 1000)
+                }
+            }
 
-    var addNewPiece = function () {
-        view.addNewPiece()
+            view.setAccuracy(game.getAccuracy());
+        },
 
-    };
+        addPiece = function () {
+            view.showNumberOfPieces(game.getCurrentNumberOfPieces() + 1);
+            startGame();
+        },
 
-    var resetGame = function () {
-        view.resetPieces();
+        restartGame = function () {
 
-    };
+            view.showNumberOfPieces(4);
+            this.startGame();
 
-    var highlight = function () {
-        startGame();
-    };
-
-
+        };
 
     return {
         'startGame': startGame,
-        'highlight': highlight,
-        'addNewPiece': addNewPiece,
-        'resetGame': resetGame
+        'addPiece': addPiece,
+        'clickOnPiece': clickOnPiece,
+        'restartGame': restartGame
     }
 }();

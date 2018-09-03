@@ -1,86 +1,120 @@
-var view = (function () {
+var view = function () {
+    var getStartNumberPieces = function () {
+            return parseInt(document.getElementById('numberOfPieces').innerText);
+        },
 
-    var numberOfPieces = 4;
+        showNumberOfPieces = function (numberOfPieces) {
+            document.getElementById('numberOfPieces').textContent = numberOfPieces.toString();
+        },
 
-    var getInitialNumberOfPieces = function () {
-       return numberOfPieces;
-    };
+        showNumberOfPiecesToFind = function (number) {
+            document.getElementById('numberToFinds').textContent = number.toString();
+        },
 
-    var addNewPiece  = function () {
-        return numberOfPieces++;
-    };
+        getTimeOfHighlight = function () {
+            return document.getElementById('highlightTime').value;
+        },
 
-    var viewPieces;
+        getNumberOfFail = function () {
+            return document.getElementById('numberOfFail').value;
+        },
 
-    var generatePieces=function (pieces) {
-        var i,piece;
-        viewPieces = [];
-        for (i = 0; i < pieces.length; i++) {
-            piece = document.createElement("div");
-            piece.classList.add('piece');
-            document.getElementById('pieces').appendChild(piece);
-            viewPieces.push(piece);
-        }
-    };
+        setNumberOfFail = function (mistakes) {
+            document.getElementById('fails').textContent = mistakes;
+        },
 
-    var resetPieces = function () {
-        var pieces,i;
-         pieces = document.getElementsByClassName('piece');
-         i = pieces.length;
-        while (i--) {
-            pieces[i].parentNode.removeChild(pieces[i]);
+        setAccuracy = function (accuracy) {
+            document.getElementById('accuracy').textContent = accuracy;
+        },
 
-        }
-        numberOfPieces =4;
-    };
-
-    var addEventListenersToPieces = function () {
-        var children = document.getElementById('pieces').children;
-        var i;
-        for (i = 0; i < children.length; i++) {
-            document.getElementById(i).setAttribute("onclick", "controller.clickOnPiece(" + i + ")");
-        }
-    };
-
-    var blackoutPieces = function (pieces) {
-        setTimeout(function () {
+        generatePieces = function (pieces) {
+            resetPieces();
             var i;
             for (i = 0; i < pieces.length; i++) {
-                if (pieces[i].toGuess === true) {
-                    document.getElementById(i).classList.remove('highlight');
+                var piece = document.createElement("div");
+                piece.setAttribute('id', i);
+                piece.classList.add('piece');
+                document.getElementById('pieces').appendChild(piece);
+            }
+        },
+
+        resetPieces = function () {
+            var pieces, i;
+            pieces = document.getElementsByClassName('piece');
+            i = pieces.length;
+            while (i--) {
+                pieces[i].parentNode.removeChild(pieces[i]);
+
+            }
+        },
+
+        highlightPieces = function (pieces) {
+            var i;
+            for (i = 0; i < pieces.length; i++) {
+                if (pieces[i].toFind === true) {
+                    document.getElementById(i).classList.add('highlight');
                 }
             }
-        }, 1000 * getTimeOfHighlight());
+            blockAllElements();
+            blackoutPieces(pieces);
+        },
 
-        addEventListenersToPieces();
-    };
+        blockAllElements = function () {
+            document.getElementById('pieces').classList.add('disabled');
+            document.getElementById('container').classList.add('disabled');
+        },
+
+        blackoutPieces = function (pieces) {
+            setTimeout(function () {
+                var i;
+                for (i = 0; i < pieces.length; i++) {
+                    if (pieces[i].toFind === true) {
+                        document.getElementById(i).classList.remove('highlight');
+                    }
+                }
+                unblockAllElements();
+            }, 1000 * getTimeOfHighlight());
 
 
+            setAttributeForElement();
+        },
 
-    var clickOnPiece = function (i, guess) {
+        unblockAllElements = function () {
+            document.getElementById('pieces').classList.remove('disabled');
+            document.getElementById('container').classList.remove('disabled');
+        },
 
-        if(guess){
-            document.getElementById(i).classList.add('correctPiece');
-        }
-        else{
-            document.getElementById(i).classList.add('wrongPiece');
-        }
+        setAttributeForElement = function () {
+            var children,children;
+             children = document.getElementById('pieces').children;
+            var i;
+            for (i = 0; i < children.length; i++) {
+                document.getElementById(i).setAttribute("onclick", "controller.clickOnPiece(" + i + ")");
+            }
+        },
 
-
-    };
-
-
-
+        clickOnPiece = function (i, find) {
+            if (find) {
+                document.getElementById(i).classList.add('correctPiece');
+            }
+            else {
+                document.getElementById(i).classList.remove('correctPiece');
+                document.getElementById(i).classList.add('wrongPiece');
+            }
+        };
 
     return {
-        'getInitialNumberOfPieces': getInitialNumberOfPieces,
-        'generatePieces':generatePieces,
-        'resetPieces':resetPieces,
-        'addNewPiece':addNewPiece,
-        'clickOnPiece':clickOnPiece
-
-
+        'getStartNumberPieces': getStartNumberPieces,
+        'generatePieces': generatePieces,
+        'highlightPieces': highlightPieces,
+        'showNumberOfPieces': showNumberOfPieces,
+        'showNumberOfPiecesToFind': showNumberOfPiecesToFind,
+        'clickOnPiece': clickOnPiece,
+        'blockAllElements': blockAllElements,
+        'getNumberOfFail': getNumberOfFail,
+        'setNumberOfFail': setNumberOfFail,
+        'setAccuracy': setAccuracy
     }
+}();
 
 
-})();

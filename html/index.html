@@ -6,19 +6,35 @@
 
 <body>
 
-
+<div id="all">
+<div id="heading" >
 <h1>Memory Game</h1>
+<p>Number of pieces: <span id="numberOfPieces">4</span></p>
+<p>Number of pieces to find: <span id="numberToFinds">1</span></p>
+    <p>Time of highlight: <input id="highlightTime" type="number" value="1" min="1"/></p>
+    <P>Number of allowed fails: <input id="numberOfFail" type="number" value="0" min="0"/></P>
+    <P>Number of fails: <span id="fails">0</span></P>
+    <P>Accuracy: <span id="accuracy">0</span>%</P>
+</div>
+
+<div id="heading2" >
+<!--<p>Time of highlight: <input id="highlightTime" type="number" value="1" min="1"/></p>
+<P>Number of allowed fails: <input id="numberOfFail" type="number" value="0" min="0"/></P>
+<P>Number of fails: <span id="fails">0</span></P>
+<P>Accuracy: <span id="accuracy">0</span>%</P>-->
+</div>
+
+</div>
+
+<div id="container">
+<!--    <button onclick="controller.startGame()">Start Game</button>
+    <button onclick="controller.resetGame()">Reset Game</button>-->
+    <button onclick="controller.startGame()"> Highlight</button>
+    <button id="addNewPiecesBtn" onclick="controller.addPiece()">Add new piece</button>
+    <button onclick="controller.restartGame()">Restart Game</button>
 
 
-<div id="stripe">
-    <button onclick="controller.startGame()">Start Game</button>
-    <button onclick="controller.resetGame()">Reset Game</button>
-    <button onclick="controller.highlight()">Highlight</button>
-    <button id="addNewPiecesBtn" onclick="controller.addNewPiece()">Add new piece</button>
-    <a>Number of pieces</a>
-    <input id="NumberOfPieces"/>
-    <a>Highlight time</a>
-    <input id="highlightTime" />
+
 
 
 </div>

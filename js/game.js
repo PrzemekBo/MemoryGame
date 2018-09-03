@@ -1,15 +1,22 @@
 var game = (function () {
-
-    var initialNumberOfPieces = 4,
+    var startNumberPieces = 4,
         currentNumberOfPieces,
-        piecesToGuess = 1,
-
+        piecesToFind = 1,
+        findeedPieces = 0,
+        numberOfFail = 0,
+        possibleNumberOfMistakes = 0,
+        numberOfShots = 0,
+        accuracy = 0,
         startGame = function (config) {
+            if (config && config.numberOfFail) {
+                possibleNumberOfMistakes = config.numberOfFail;
+            }
             if (config && config.numberOfPieces) {
                 currentNumberOfPieces = config.numberOfPieces;
             } else {
-                currentNumberOfPieces = initialNumberOfPieces;
+                currentNumberOfPieces = startNumberPieces;
             }
+            findeedPieces = 0;
         },
 
         currentPieces = [],
@@ -17,11 +24,11 @@ var game = (function () {
         getPieces = function () {
             var i,
                 pieces = [];
-
             for (i = 0; i < currentNumberOfPieces; i++) {
                 pieces.push({});
             }
-            getRandomPieces(pieces);
+
+            randomizePieces(pieces);
 
             currentPieces = pieces;
             return pieces;
@@ -30,42 +37,88 @@ var game = (function () {
         getCurrentPieces = function () {
             return currentPieces;
         },
-        getRandomPieces = function (pieces) {
-            piecesToGuess = calculatePiecesToAdd(pieces.length);
 
-            for (i = 0; i < piecesToGuess; i++) {
-                var randomNumber = randomizePiecesToGuess(pieces.length);
-                while (pieces[randomNumber].toGuess === true) {
-                    randomNumber = randomizePiecesToGuess(pieces.length);
+        randomizePieces = function (pieces) {
+            piecesToFind = calculatePiecesToFind(pieces.length);
+            var i, randomNumber
+            for (i = 0; i < piecesToFind; i++) {
+                randomNumber = randomizePiecesToFind(pieces.length);
+                while (pieces[randomNumber].toFind === true) {
+                    randomNumber = randomizePiecesToFind(pieces.length);
                 }
-                pieces[randomNumber].toGuess = true;
+                pieces[randomNumber].toFind = true;
             }
 
             return pieces;
         },
-        calculatePiecesToAdd = function (piecesToGuess) {
-            return Math.floor(piecesToGuess / 2 - 1);
+
+        calculatePiecesToFind = function (currentPieces) {
+            return Math.floor(currentPieces / 2 - 1);
         },
 
-        randomizePiecesToGuess = function (length) {
+        randomizePiecesToFind = function (length) {
             return Math.floor(Math.random() * length);
+        },
+
+        checkClickedPiece = function (index) {
+            numberOfShots++;
+            if (currentPieces[index].toFind === true) {
+                findeedPieces++;
+                currentPieces[index].toFind = false;
+                return true;
+            }
+
+            numberOfFail++;
+            return false;
+        },
+
+        checkIfGameCanBeContinued = function () {
+            var canBeContinued = possibleNumberOfMistakes >= numberOfFail;
+            if (!canBeContinued) {
+                numberOfShots = 0;
+            }
+            return possibleNumberOfMistakes >= numberOfFail;
+        },
+
+        getAccuracy = function () {
+            accuracy = Math.round((numberOfShots - numberOfFail) * 100) / numberOfShots;
+            if (numberOfShots === 0) {
+                accuracy = 0;
+            }
+            return accuracy;
+        },
+
+        getCurrentNumberOfPieces = function () {
+            return currentNumberOfPieces;
+        },
+
+        checkIfAllPiecesFinded = function () {
+            return findeedPieces === calculatePiecesToFind(currentNumberOfPieces);
+        },
+
+        resetNumberOfFails = function () {
+            numberOfFail = 0;
+        },
+
+        getNumberOfFail = function () {
+            return numberOfFail;
+        },
+        resetNumberOfShots = function () {
+            numberOfShots = 0;
         };
-
-
-
-
-  ;
 
     return {
         'startGame': startGame,
         'getPieces': getPieces,
-        'calculatePiecesToAdd': calculatePiecesToAdd,
-        'getCurrentPieces': getCurrentPieces
-
+        'calculatePiecesToFind': calculatePiecesToFind,
+        'getCurrentPieces': getCurrentPieces,
+        'checkClickedPiece': checkClickedPiece,
+        'checkIfAllPiecesFinded': checkIfAllPiecesFinded,
+        'getCurrentNumberOfPieces': getCurrentNumberOfPieces,
+        'checkIfGameCanBeContinued': checkIfGameCanBeContinued,
+        'resetNumberOfFails': resetNumberOfFails,
+        'getNumberOfFail': getNumberOfFail,
+        'getAccuracy': getAccuracy,
+        'resetNumberOfShots': resetNumberOfShots
     }
-
-
-}
-
-
-());
+})();
