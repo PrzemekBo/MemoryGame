@@ -3,7 +3,7 @@ describe('Game', function () {
 
     it('should have 4 pieces after game start', function () {
         var pieces;
-        //zwracam 4
+
         game.startGame();
 
         pieces = game.getPieces();
@@ -32,6 +32,7 @@ describe('Game', function () {
         expect(pieces.length).toBe(6);
     });
 
+    
     it('should have start game witch 10 pieces', function () {
         var pieces,
             config = {
@@ -47,6 +48,7 @@ describe('Game', function () {
         expect(pieces.length).toBe(10);
     });
 
+
     it('should calculate 2 pieces to find for 6 pieces', function () {
         var pieces,
             piecesToFind,
@@ -61,6 +63,7 @@ describe('Game', function () {
         expect(piecesToFind).toBe(2);
     });
 
+
     it('should calculate 10 current pieces', function () {
         var numberOfPieces,
             config = {
@@ -72,6 +75,7 @@ describe('Game', function () {
         numberOfPieces = game.getCurrentNumberOfPieces();
         expect(numberOfPieces).toBe(10);
     });
+
 
     it('should return false, because not all pieces finded', function () {
         var allPiecesFinded,
@@ -85,14 +89,13 @@ describe('Game', function () {
         expect(allPiecesFinded).toBe(false);
     });
 
+
     it('should return false, because piece is not to find', function () {
         var findedPiece,
             config = {
                 numberOfPieces: 10
             };
         game.startGame(config);
-
-
         game.getPieces();
         while (game.checkClickedPiece(1)) {
             game.getPieces();
@@ -178,6 +181,7 @@ describe('Game', function () {
 
 
     it('should mock methods and test controller startGame method', function () {
+
         var object = [{}, {}, {}, {}];
         spyOn(view, 'getStartNumberPieces').and.returnValue(4);
         spyOn(view, 'getNumberOfFail').and.returnValue(0);
@@ -218,37 +222,6 @@ describe('Game', function () {
         expect(controller.startGame).toHaveBeenCalled();
 
     });
-
-
-    it('should mock methods and test controller addPiece method', function () {
-
-        var div = document.createElement("div");
-        div.innerText = "";
-        spyOn(document, "getElementById").and.returnValue(div);
-
-
-        spyOn(game, 'getCurrentNumberOfPieces').and.returnValue(4);
-        spyOn(view, 'showNumberOfPieces');
-        spyOn(controller, 'startGame');
-
-        controller.addPiece();
-
-        expect(game.getCurrentNumberOfPieces()).toEqual(5);
-        expect(controller.startGame).toHaveBeenCalled();
-
-    });
-
-    /*
-        it('should mock methods and test controller addPiece method', function () {
-
-            spyOn(game, 'checkClickedPiece');
-            spyOn(view, 'clickOnPiece');
-            spyOn(game, 'checkIfAllPiecesFinded');
-            spyOn(view, 'blockAllElements');
-
-
-        });
-    */
 
     function findPiecesToFind(pieces) {
         return pieces.filter(function (piece) {

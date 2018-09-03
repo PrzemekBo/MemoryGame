@@ -85,8 +85,8 @@ var view = function () {
         },
 
         setAttributeForElement = function () {
-            var children,children;
-             children = document.getElementById('pieces').children;
+
+            var children = document.getElementById('pieces').children;
             var i;
             for (i = 0; i < children.length; i++) {
                 document.getElementById(i).setAttribute("onclick", "controller.clickOnPiece(" + i + ")");
