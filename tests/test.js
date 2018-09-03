@@ -32,7 +32,7 @@ describe('Game', function () {
         expect(pieces.length).toBe(6);
     });
 
-    
+
     it('should have start game witch 10 pieces', function () {
         var pieces,
             config = {
